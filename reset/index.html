@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Reset your password &middot; CareerCrush</title>
+<meta name="robots" content="noindex">
+<link rel="stylesheet" href="/style.css">
+</head>
+<body>
+<main class="wrap center">
+  <div class="card">
+    <h1>CareerCrush<span class="dot">.</span></h1>
+
+    <div id="valid" hidden>
+      <p class="lede">Opening the app to reset your password&hellip;</p>
+      <p><a class="btn" id="open" href="#">Open CareerCrush</a></p>
+      <p class="muted" style="font-size:0.9rem">If nothing happens, tap the button above.</p>
+    </div>
+
+    <div id="invalid" hidden>
+      <p class="lede">This link is invalid or expired. Request a new one from the app.</p>
+    </div>
+  </div>
+</main>
+<script>
+(function () {
+  var params = new URLSearchParams(window.location.search);
+  var tokenHash = params.get('token_hash');
+  var type = params.get('type');
+
+  if (tokenHash && type) {
+    var target = 'careercrush://reset?token_hash=' + encodeURIComponent(tokenHash) +
+                 '&type=' + encodeURIComponent(type);
+    document.getElementById('open').href = target;
+    document.getElementById('valid').hidden = false;
+    window.location.replace(target);
+  } else {
+    document.getElementById('invalid').hidden = false;
+  }
+})();
+</script>
+</body>
+</html>
