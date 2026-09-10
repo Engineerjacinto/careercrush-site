@@ -90,6 +90,20 @@ p {
   color: var(--ink-soft);
 }
 
+.stamp {
+  font-size: 0.9rem;
+  margin: 0 0 1.5rem;
+}
+
+ul {
+  margin: 0 0 1rem;
+  padding-left: 1.25rem;
+}
+
+li {
+  margin-bottom: 0.4rem;
+}
+
 a {
   color: var(--accent);
   text-decoration: none;
