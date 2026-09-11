@@ -131,7 +131,7 @@ nav.links a {
 }
 
 nav.links a:hover {
-  border-bottom-color: var(--accent);
+  border-bottom-color: var(--ink);
 }
 
 .btn {
@@ -167,7 +167,7 @@ nav.links a:hover {
 }
 
 .back:hover {
-  color: var(--accent);
+  color: var(--ink);
 }
 
 footer {
