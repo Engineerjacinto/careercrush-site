@@ -25,13 +25,20 @@
 </main>
 <script>
 (function () {
+  // Forwards a recovery link into the app. Exactly two values ever leave this
+  // page: the token hash, checked against the shape Supabase issues, and the
+  // literal type=recovery. The destination is fixed here and never read from
+  // the URL, and every other parameter is dropped, so the page cannot be used
+  // to push arbitrary query strings (or a session token) into the app.
+  var APP_URL = 'careercrush://reset';
+  var TOKEN_HASH = /^[A-Za-z0-9_-]{8,128}$/;
+
   var params = new URLSearchParams(window.location.search);
   var tokenHash = params.get('token_hash');
   var type = params.get('type');
 
-  if (tokenHash && type) {
-    var target = 'careercrush://reset?token_hash=' + encodeURIComponent(tokenHash) +
-                 '&type=' + encodeURIComponent(type);
+  if (type === 'recovery' && tokenHash && TOKEN_HASH.test(tokenHash)) {
+    var target = APP_URL + '?token_hash=' + encodeURIComponent(tokenHash) + '&type=recovery';
     document.getElementById('open').href = target;
     document.getElementById('valid').hidden = false;
     window.location.replace(target);
