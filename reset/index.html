@@ -5,6 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Reset your password &middot; CareerCrush</title>
 <meta name="robots" content="noindex">
+<!-- GitHub Pages cannot set response headers, so the policy is set here. The
+     token must never leave this page in a Referer. -->
+<meta name="referrer" content="no-referrer">
 <link rel="stylesheet" href="/style.css">
 </head>
 <body>
@@ -33,9 +36,19 @@
   var APP_URL = 'careercrush://reset';
   var TOKEN_HASH = /^[A-Za-z0-9_-]{8,128}$/;
 
-  var params = new URLSearchParams(window.location.search);
+  // The email template puts the hash in the fragment (#token_hash=…), which
+  // browsers never send to the server, so it stays out of hosting and CDN
+  // logs. The query is still read for links emailed before that change; they
+  // expire within an hour.
+  var params = new URLSearchParams(window.location.hash.slice(1));
+  if (!params.get('token_hash')) params = new URLSearchParams(window.location.search);
   var tokenHash = params.get('token_hash');
   var type = params.get('type');
+
+  // Take the hash out of the address bar and history before anything else.
+  if (window.history && window.history.replaceState) {
+    window.history.replaceState(null, '', window.location.pathname);
+  }
 
   if (type === 'recovery' && tokenHash && TOKEN_HASH.test(tokenHash)) {
     var target = APP_URL + '?token_hash=' + encodeURIComponent(tokenHash) + '&type=recovery';
